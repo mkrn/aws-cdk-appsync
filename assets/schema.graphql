@@ -1,0 +1,49 @@
+type S3Object {
+  bucket: String!
+  key: String!
+  region: String!
+}
+
+input S3ObjectInput {
+  bucket: String!
+  key: String!
+  region: String!
+  localUri: String
+  mimeType: String
+}
+
+type Item @aws_iam @aws_api_key {
+  id: ID
+  name: String!
+  file: S3Object
+  email: String
+  given_name: String
+  family_name: String
+}
+
+input ItemInput {
+  name: String!
+  file: S3ObjectInput
+  email: String
+  given_name: String
+  family_name: String
+}
+
+type Query {
+  items: [Item] @aws_iam @aws_api_key
+  item(id: String): Item @aws_iam @aws_api_key
+}
+
+type Mutation {
+  addItem(item: ItemInput): Item @aws_iam @aws_api_key
+}
+
+type Schema {
+  query: Query
+  mutation: Mutation
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}
